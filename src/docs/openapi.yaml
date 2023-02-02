@@ -1,0 +1,141 @@
+openapi: 3.1.0
+info:
+  title: MediU
+  description: Main backend API for the MediU application.
+  version: 1.0.0
+servers:
+  - url: localhost:3000/api/v1/
+tags:
+  - name: Patients
+    description: APIs for the patients
+  - name: Patients + Doctors
+    description: APIs for both patients and doctors
+  - name: Doctors
+    description: APIs for doctors only
+paths:
+  /patient/login:
+    post:
+      tags:
+        - Patients
+      description: Create new patient in system
+      requestBody:
+        description: Patient that we want to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: false
+      responses:
+        '200':
+          description: New patient is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+      x-codegen-request-body-name: Patient
+  /patient/signup:
+    post:
+      tags:
+        - Patients
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patients'
+  /patient/details:
+    summary: Get the personal details of the patient
+    get:
+      tags:
+        - Patients + Doctors
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+  /consultation:
+    summary: Request a consultation
+    post:
+      summary: ''
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Patients
+  /consultation/all:
+    summary: Get all consultations
+    get:
+      summary: ''
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Doctors
+  /consultation/{id}:
+    summary: Get the specified consultation
+    get:
+      summary: ''
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Doctors
+components:
+  schemas:
+    Patient:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        dob:
+          type: number
+        gender:
+          type: string
+        weight:
+          type: number
+        height:
+          type: integer
+    updatePatient:
+      required:
+        - companies
+        - name
+      type: object
+      properties:
+        isPublic:
+          type: boolean
+        name:
+          type: string
+        books:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: number
+        companies:
+          type: array
+          items:
+            type: string
+    Patients:
+      type: array
+      items:
+        $ref: '#/components/schemas/Patient'
